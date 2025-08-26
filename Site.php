@@ -202,7 +202,6 @@
     <br>
    
   </main>
-
   <footer>
     <p>&copy; 2025 Eco Luxo - Todos os direitos reservados.</p>
   </footer>
