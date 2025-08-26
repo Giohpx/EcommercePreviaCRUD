@@ -1,3 +1,34 @@
+<?php
+$conn = pg_connect("host=localhost dbname=EcommerceCRUD user=postgres password=postgres");
+if (!$conn) {
+    die("Erro na conexão com o banco de dados.");
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  
+    $nome = $_POST['nome'];
+    $email = $_POST['email'];
+    $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
+
+    $sql = "INSERT INTO usuario (nome, email, senha) VALUES ($1, $2, $3)";
+    $result = pg_query_params($conn, $sql, [$nome, $email, $senha]);
+
+    if ($result) {
+        echo "Usuário adicionado com sucesso!";
+    } else {
+        echo "Erro ao adicionar usuário.";
+    }
+}
+
+$query = "SELECT cod_usuario, nome, email, admin FROM usuario ORDER BY cod_usuario";
+$result = pg_query($conn, $query);
+if (!$result) {
+    die("Erro na consulta.");
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -101,7 +132,8 @@
   <div class="container">
     <h2>Cadastro de usuário</h2>
 
-    <form action="salvarUsuario.php" method="POST">
+    <form action="usuarios.php" method="POST">
+
       <label for="nome">Nome</label>
       <input type="text" id="nome" name="nome" placeholder="Digite o nome completo" required>
 
